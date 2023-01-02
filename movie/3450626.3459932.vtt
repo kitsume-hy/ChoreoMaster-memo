@@ -1,0 +1,499 @@
+WEBVTT
+
+00:00:00.433 --> 00:00:03.666
+Hello, everyone, I'm Tan Zhipeng from NetEase AI Lab,
+
+00:00:03.666 --> 00:00:07.666
+and today I'm gonna be talking about ChoreoMaster.
+
+00:00:07.666 --> 00:00:10.666
+Choreography-oriented, music driven dance synthesis.
+
+00:00:11.466 --> 00:00:16.833
+To start with, I will first give you some background to show the motivation of our work.
+
+00:00:16.866 --> 00:00:24.733
+Dance motions are common elements in films and video games,
+So, there are rich demands for high-quality 3D dance animation.
+
+00:00:24.733 --> 00:00:31.066
+However, the production of dance animations is extremely costly and inefficient,
+
+00:00:31.066 --> 00:00:37.700
+One minute dance animation may cost thousands of (US) dollars and need several weeks to produce,
+
+00:00:37.700 --> 00:00:43.700
+Besides, the whole task requires skill and expertise in choreography and dancing.
+
+00:00:43.700 --> 00:00:48.933
+Therefore, many researchers have tried to build automatic dance synthesize systems.
+
+00:00:49.566 --> 00:00:54.500
+Earlier researchers have tried to use traditional graph-based models to build such tools. 
+
+00:00:54.500 --> 00:00:58.433
+These models are robust, stable and controllable.
+
+00:00:58.433 --> 00:01:05.766
+However, their fundamental drawbacks are 
+the underestimation and oversimplification of dance choreography.
+
+00:01:05.766 --> 00:01:13.100
+And these graph-based models are actually 
+incapable of modeling the deep cross-modal relationships between music and dance.
+
+00:01:13.766 --> 00:01:19.333
+Besides, existing methods fail to address widely used choreographic rules.
+
+00:01:20.233 --> 00:01:28.900
+With the booming of artificial intelligence, various researchers have 
+proposed deep generative models for music-driven dance motion synthesis.
+
+00:01:28.900 --> 00:01:35.700
+When properly set up, these methods do appear to better model the choreomusical relationships.
+
+00:01:35.700 --> 00:01:40.766
+However, their most obvious shortcoming is the poor controllability.
+
+00:01:40.766 --> 00:01:48.766
+Moreover, high-frequency motion details may be
+considered as noises and intentionally ignored during the learning process,
+
+00:01:48.766 --> 00:01:52.766
+causing some results to be ‘dull’ and ‘blurred’.
+
+00:01:52.766 --> 00:01:58.733
+Furthermore, existing methods typically lack explicit attention to choreographic rules.
+
+00:01:58.733 --> 00:02:09.000
+So, the generalizability of the model is limited, and
+may generate strange and unaesthetic movements given music outside the training set.
+
+00:02:09.533 --> 00:02:15.300
+So, what makes a desirable production-ready music-driven dance synthesis tool?
+
+00:02:15.300 --> 00:02:20.366
+Firstly, users should have complete control over the synthesis process
+
+00:02:20.600 --> 00:02:25.400
+Secondly,  it should robustly and stably produce high-quality dance motions.
+
+00:02:25.400 --> 00:02:31.000
+High-quality here means that the results satisfy the chorographic rules
+
+00:02:31.033 --> 00:02:34.900
+Let's watch two generated dances by our system.
+
+00:02:35.666 --> 00:02:39.300
+we can see that the result without the choreographic rules 
+
+00:02:39.300 --> 00:02:43.200
+only appear to be a set of dance movements smoothly pieced together,
+
+00:02:43.200 --> 00:02:47.133
+but overall do not look like a well-composed artform.
+
+00:02:47.133 --> 00:02:50.600
+So, what's the basic choreographic rules?
+
+00:02:50.600 --> 00:02:59.400
+Fortunately, after consulting professional artists 
+and studying choreomusicology, we have found some widely used rules.
+
+00:02:59.400 --> 00:03:06.666
+The first is the style consistency,
+the style of music and body movements should convey similar mood and tone.
+
+00:03:06.666 --> 00:03:13.966
+The second is the rhythm consistency, 
+each synchronized dance and music segment should present the same rhythmic pattern.
+
+00:03:14.633 --> 00:03:17.833
+ 
+The third is the structure consistency,
+
+00:03:17.833 --> 00:03:22.433
+the organization of a dance should be coordinated with the music, 
+
+00:03:22.433 --> 00:03:27.433
+for example, repeated musical phrases are usually assigned with repeated motions.
+
+00:03:28.100 --> 00:03:36.033
+Based on these rules, we have developed ChoreoMaster, 
+a choreography-oriented music-driven dance synthesis system.
+
+00:03:36.033 --> 00:03:42.000
+We designed a choreomusical embedding module, 
+which learn the style embedding and rhythm embeddings.
+
+00:03:42.000 --> 00:03:51.866
+The learned embeddings are then incorporated within 
+a novel graph-based framework, which can generate high-quality dance motions controllably.
+
+00:03:51.866 --> 00:03:55.900
+Next, we'll show the technical details of our system.
+
+00:03:56.633 --> 00:04:01.100
+To start with, let's first talk about the relationship between style and rhythm.
+
+00:04:01.933 --> 00:04:04.533
+Let's look at one example, 
+
+00:04:04.533 --> 00:04:08.100
+we can see that these two dances actually share the same rhythmic pattern, 
+
+00:04:08.100 --> 00:04:11.066
+but present very different visual styles.
+
+00:04:11.066 --> 00:04:14.933
+So, we can say that style and rhythm are relatively independent.
+
+00:04:14.966 --> 00:04:16.966
+Another example here,
+
+00:04:17.000 --> 00:04:22.866
+We can see such soothing music tends to have a much softer rhythm than the ones we just saw.
+
+00:04:23.766 --> 00:04:27.500
+So, the style and rhythm still have some correlation to each other.
+
+00:04:27.500 --> 00:04:33.033
+the distribution of rhythmic patterns is strongly related to the musical and dance styles.
+
+00:04:34.133 --> 00:04:40.866
+To manage such complex style and rhythm relationships, 
+we have designed a choreomusical embedding network.
+
+00:04:42.066 --> 00:04:49.066
+On the one hand, since style and rhythm are relatively independent, 
+we disentangled the style and rhythm embedding network.
+
+00:04:49.066 --> 00:04:55.066
+We build a choreomusical style embedding network and a choreomusical rhythm embedding network.
+
+00:04:55.066 --> 00:04:59.433
+This would also improve the system's interpretability and controllability.
+
+00:04:59.433 --> 00:05:06.033
+On the other hand, since the distribution of rhythmic patterns is related to the music and dance style,
+
+00:05:06.066 --> 00:05:10.266
+we also concatenate the style embedding with our rhythm embedding network.
+
+00:05:10.633 --> 00:05:15.666
+Before we talk about the style embedding, an important question is that 
+
+00:05:15.666 --> 00:05:21.933
+why don’t we use a straightforward solution of 
+manually dividing music and dance into some style categories
+
+00:05:21.933 --> 00:05:28.700
+We can see from the images that the boundaries 
+between different music or dance styles are not always so clear.
+
+00:05:28.733 --> 00:05:34.500
+Moreover, the classification criteria for music and dance styles are different,
+
+00:05:34.533 --> 00:05:39.500
+most music or dance genres do not have an equivalent tag in its counterpart.
+
+00:05:39.533 --> 00:05:44.366
+Besides, each main style of music or dance contains numerous sub-styles,
+
+00:05:44.366 --> 00:05:50.500
+for instance, hip-hop can be further classed as popping, locking, breaking, urban, etc.
+
+00:05:50.533 --> 00:05:59.833
+Therefore, we adopt a choreomusical style embedding network 
+to implicitly map music and dance segments into a unified embedding space,
+
+00:05:59.833 --> 00:06:03.933
+where segments conveying similar mood and tone are closely clustered.
+
+00:06:03.933 --> 00:06:07.366
+The architecture is illustrated in the figure.
+
+00:06:07.400 --> 00:06:14.066
+For the music encoding branch Em , 
+We adopt the state-of-the-art music tagging network as our backbone.
+
+00:06:14.100 --> 00:06:18.866
+It is composed of four convolutional block layers and two GRU layers.
+
+00:06:18.900 --> 00:06:26.166
+We build a symmetrical dance encoding branch Ed, except that we used graph convolutional blocks here.
+
+00:06:26.200 --> 00:06:33.400
+The music and dance phrases will be compress into 32-dimensional embedding vectors (Zm and Zd)
+
+00:06:33.400 --> 00:06:41.166
+To benefit from the vast amount of unpaired music and motion data, 
+we employed a two-stage training procedure.
+
+00:06:41.433 --> 00:06:48.833
+The first is the separate training stage, both branches are trained independently using unpaired data.
+
+00:06:48.866 --> 00:06:55.166
+To better reflect latent substyles, we incorporate the unsupervised DEC strategy.
+
+00:06:55.166 --> 00:07:00.133
+So, the loss function is the sum of the classification loss and the DEC loss.
+
+00:07:00.133 --> 00:07:07.766
+the second is the joint training phase, we’ll use music and motion pairs to jointly train the two branches.
+
+00:07:07.766 --> 00:07:12.766
+And we add MSE loss between music and motion embedding into the loss function.
+
+00:07:12.800 --> 00:07:18.266
+Here is the T-SNE visualization of the style embedding before and after joint training,
+
+00:07:18.300 --> 00:07:23.033
+we can see that Music-dance pairs have much closer embedding after joint training.
+
+00:07:24.400 --> 00:07:27.666
+Here is an ablation study on style embedding.
+
+00:07:46.033 --> 00:07:52.066
+Unlike style, rhythm can be clearly represented using music time signature and musical notation
+
+00:07:52.100 --> 00:07:59.366
+For instance, in this image a 4/4 time signature indicate that four beats exist in each music meter.
+
+00:07:59.366 --> 00:08:04.700
+However, matching dance movements to musical rhythm is still a difficult task.
+
+00:08:04.700 --> 00:08:13.533
+Since, music usually includes multiple instrumental tracks and vocals,
+while dances often involve many simultaneously moving joints.
+
+00:08:13.566 --> 00:08:21.433
+To better understand their rhythmic relationships, we asked professional artists to specify the beat patterns.
+
+00:08:21.433 --> 00:08:28.300
+By analyzing the results, we found that beat patterns can actually be represented as an 8 bits binary vector,
+
+00:08:28.300 --> 00:08:31.200
+which we call as rhythm signature
+
+00:08:31.200 --> 00:08:35.800
+The even bits in the signature denote the regular main beat,
+
+00:08:35.800 --> 00:08:38.500
+while odd bits represent the half beats. 
+
+00:08:38.500 --> 00:08:45.033
+Consecutive zeros indicate a legato, a smooth period in music and dance motions.
+
+00:08:45.033 --> 00:08:49.400
+And there are only 13 common rhythm signatures,
+
+00:08:49.400 --> 00:08:53.333
+and the distance between them can be defined using Hamming distance.
+
+00:08:53.333 --> 00:08:56.533
+Here we show some examples of rhythm signatures
+
+00:09:13.033 --> 00:09:19.033
+We designed a Choreomusical Rhythm embedding network to classify the rhythm signature,
+
+00:09:19.066 --> 00:09:27.733
+as shown in the figure. it comprises music and dance feature extraction, 
+and a shared block for rhythm signature classification.
+
+00:09:27.733 --> 00:09:30.066
+Style embeddings are concatenated as input
+
+00:09:30.066 --> 00:09:39.300
+And Because it's not necessary to train the network from low-level original signals, 
+we feed the network with extracted music and motion features.
+
+00:09:39.866 --> 00:09:46.000
+All blocks in this network are jointly trained using labelled paired music and dance data,
+
+00:09:46.000 --> 00:09:53.166
+The Ldr and Lmr in the loss function stands for the classification loss for dance and music respectively.
+
+00:09:53.700 --> 00:09:56.933
+Here is an ablation study about rhythm embedding.
+
+00:10:13.333 --> 00:10:18.200
+The last part of our system is the choreography-oriented graph-based framework.
+
+00:10:18.400 --> 00:10:20.800
+A motion graph is a directed graph, 
+
+00:10:20.800 --> 00:10:26.766
+where each node denotes a motion segment while each edge represents the transition cost.
+
+00:10:27.300 --> 00:10:31.766
+Compared with traditional graph building, we have the following main differences.
+
+00:10:31.766 --> 00:10:37.033
+The first difference it's that we introduce local structural constraint during graph building, 
+
+00:10:37.033 --> 00:10:41.433
+We use dance motion meter instead of dance motion beat as our motion node.
+
+00:10:41.433 --> 00:10:46.833
+The second it's that we consider Style embedding different when calculating the transition cost.
+
+00:10:46.833 --> 00:10:53.033
+This could help to avoid some style incompatible transition examples shown in the right.
+
+00:10:53.033 --> 00:10:58.466
+Besides, dance motions are further augmented by mirroring, blending, shuffling.
+
+00:10:58.466 --> 00:11:00.100
+Some examples are shown in the right.
+
+00:11:00.100 --> 00:11:04.100
+We totally achieved 2.56 augmentation rate.
+
+00:11:04.633 --> 00:11:09.900
+With a motion graph built, we can then optimize new dances for musics.
+
+00:11:09.900 --> 00:11:16.733
+When given an input piece of music, we will first apply music segmentation and similarity labeling method.
+
+00:11:16.733 --> 00:11:20.200
+And Similar music meters will be given the same ID.
+
+00:11:20.200 --> 00:11:24.466
+Then we will find an optimal path in the motion graph that optimize this function.
+
+00:11:24.666 --> 00:11:26.833
+The function contains three part. 
+
+00:11:26.833 --> 00:11:31.933
+The Data term accounts for the style and rhythm matching cost between music and motion.
+
+00:11:31.933 --> 00:11:36.533
+the Transition term ensures a smooth transition between adjacent motion segments.
+
+00:11:37.133 --> 00:11:41.266
+The structure term addresses structural consistency between music and dance.
+
+00:11:41.933 --> 00:11:46.866
+And we include a repetition constraint and a mirror constraint from the choreographic rules,
+
+00:11:48.033 --> 00:11:52.466
+The function can be optimized using a dynamic programming algorithm.
+
+00:11:53.066 --> 00:11:55.800
+Here’s an ablation study on structure constraint
+
+00:12:19.266 --> 00:12:22.200
+Next, we’ll show some evaluation of our method.
+
+00:12:23.266 --> 00:12:30.600
+Our database include 19.91 hours of dance motions, and 9.91 hours of them have paired music.
+
+00:12:31.166 --> 00:12:35.600
+We additionally collected an 102.5 hours of music dataset.
+
+00:12:36.433 --> 00:12:40.833
+The dance and music will be labeled with two-dimensional styles and rhythm signatures.
+
+00:12:41.466 --> 00:12:46.533
+The training takes 14 hours and our system only need several seconds to synthesize a dance.
+
+00:12:47.766 --> 00:12:51.600
+Here we show some results automatically generated by ChoreoMaster.
+
+00:14:37.366 --> 00:14:40.566
+Our system also supports diversified generation for one music.
+
+00:14:40.566 --> 00:14:44.766
+by running the optimization several times and skip used motions.
+
+00:14:57.666 --> 00:15:01.833
+We have compared our method to several alternative dance generation methods
+
+00:15:55.366 --> 00:16:00.133
+We also performed a user study to help us qualitatively evaluate our method.
+
+00:16:00.700 --> 00:16:07.400
+We used 30 test music clips, and invited 35 participants, 10 of them are choreographers or artists.
+
+00:16:08.000 --> 00:16:13.600
+They are asked to rate the dance realism, style, rhythm and structural consistency of the results.
+
+00:16:14.366 --> 00:16:19.000
+From the table we can see our method achieves higher scores than other methods,
+
+00:16:19.000 --> 00:16:22.100
+and is close to real dances.
+
+00:16:23.300 --> 00:16:28.600
+As we have mentioned, the controllability is of vital importance to a production-ready tool,
+
+00:16:29.100 --> 00:16:33.766
+Here we show how ChoreoMaster can adapt to some common requirements.
+
+00:16:34.433 --> 00:16:39.666
+The most common demand for artists is to have precise control over the synthesized results,
+
+00:16:40.400 --> 00:16:45.600
+for instance, forcing some specific dance motions to appear at specific locations,
+
+00:16:46.466 --> 00:16:50.700
+replacing unwanted motions without affecting other movements, and so on.
+
+00:16:51.566 --> 00:16:57.400
+Besides, We also support trajectory control by encouraging the character’s root position 
+
+00:16:57.400 --> 00:17:02.466
+to stay close to user-specified locations at specified time points.
+
+00:17:04.766 --> 00:17:11.833
+Another common requirement is to restrict the range of motion to prevent dancers from moving off the stage.
+
+00:17:11.833 --> 00:17:20.433
+This can be achieved by adding an extra range constraint to the cost function, 
+penalizing motions violating the specified ranges
+
+00:17:21.166 --> 00:17:26.700
+Furthermore, dance motion graph can be also used to assist the creative process
+
+00:17:27.133 --> 00:17:32.600
+In our system, this can be achieved by lowering the edge transition threshold  T,
+
+00:17:32.600 --> 00:17:37.566
+and increasing the transition weight lambda11 to encourages more novel transitions.
+
+00:17:48.700 --> 00:17:53.633
+Although ChoreoMaster has successfully been put into practical use, limitations remain.
+
+00:17:53.833 --> 00:18:02.633
+Currently, it cannot synthesize dance styles that are absent from the database. 
+This can be addressed by further expanding our dance database.
+
+00:18:03.500 --> 00:18:09.866
+Furthermore, we currently only support four-beat music. 
+Again, further data acquisition can overcome this problem.
+
+00:18:11.133 --> 00:18:17.233
+Lastly, our system still can’t handle the semantic relationships between dance motions and music lyrics.
+
+00:18:17.766 --> 00:18:22.800
+It would be interesting to incorporate further techniques into our system, like NLP modules.
+
+00:18:23.800 --> 00:18:32.500
+Lastly, we thank the reviewers for their constructive comments, 
+and the artists for giving their time and great expertise to help improve our system.
+
+00:18:32.966 --> 00:18:36.866
+We thank the user study participants for their time and patience.
+
+00:18:36.866 --> 00:18:40.866
+This work was supported by the National Key Technology RD Program,
+
+00:18:41.766 --> 00:18:44.266
+the National Natural Science Foundation of China,
+
+00:18:44.266 --> 00:18:48.100
+and the Research Grant of Beijing Higher Institution Engineering Research Center.
+
+00:18:48.666 --> 00:18:49.966
+Thanks for your listening.
